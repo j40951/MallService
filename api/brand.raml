@@ -1,0 +1,67 @@
+#%RAML 1.0
+
+title: MallService Brand API
+version: v1
+baseUri: mall/{version}
+mediaType: application/json
+
+types: 
+    Brand: !include schema/brand.json
+    Links: !include schema/links.json
+
+/brands:
+    post:
+        description: Create a brand
+        headers: 
+        body: 
+            type: object
+            properties:
+                brand: Brand
+        responses: 
+            201:
+                body:
+                    type: object
+                    properties:
+                        brand: Brand
+                        links: Links
+    get:
+        description: Get all brands
+        headers: 
+        body: 
+        responses: 
+            200:
+                body:
+                    type: object
+                    properties:
+                        brands: Brand[]
+                        links: Links
+    /{brandID}:
+        uriParameters:
+            brandID: 
+                type: string
+                format: uuid
+        get:
+            description: Get a special brand
+            headers: 
+            body: 
+            responses: 
+                200:
+                    body:
+                        type: object
+                        properties:
+                            brand: Brand
+                            links: Links
+        put:
+            description: Update a special brand
+            headers: 
+            body: 
+                type: object
+                properties:
+                    brand: Brand
+            responses: 
+                200:
+                    body:
+                        type: object
+                        properties:
+                            brand: Brand
+                            links: Links
