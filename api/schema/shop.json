@@ -1,0 +1,27 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "string",
+            "format": "uuid"
+        },
+        "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+        },
+        "avatar": {
+            "type": "string",
+            "format": "url"
+        },
+        "story": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 1024
+        }
+    },
+    "required": [
+        "name", "avatar"
+    ]
+}
