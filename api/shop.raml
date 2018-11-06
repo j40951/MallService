@@ -1,0 +1,136 @@
+#%RAML 1.0
+
+title: MallService Shop API
+version: v1
+baseUri: mall/{version}
+mediaType: application/json
+
+types: 
+    Shop: !include schema/shop.json
+    Links: !include schema/links.json
+
+/shops:
+    get:
+        description: Get a list of shops
+        headers: 
+        queryParameters:
+            name:
+                type: string
+                required: false
+            page:
+                type: integer
+                required: true
+            per_page:
+                type: integer
+                minimum: 10
+                maximum: 200
+                default: 50
+
+        body: 
+        responses: 
+            200:
+                body:
+                    type: object
+                    properties:
+                        shops: Shop[]
+                        links: Links
+    /{shopID}:
+        uriParameters:
+            shopID: 
+                type: string
+                format: uuid
+        get:
+            description: Get a special shop
+            headers: 
+            body: 
+            responses: 
+                200:
+                    body:
+                        type: object
+                        properties:
+                            shop: Shop
+                            links: Links
+
+/malls/{mallID}/shops:
+    uriParameters:
+        mallID: 
+            type: string
+            format: uuid
+    get:
+        description: Get all shops of a special mall
+        headers: 
+        body: 
+        responses: 
+            200:
+                body:
+                    type: object
+                    properties:
+                        shops: Shop[]
+                        links: Links
+
+/tenants/{tenantID}/shops:
+    uriParameters:
+        tenantID: 
+            type: string
+            format: uuid
+    get:
+        description: Get all shops
+        headers: 
+        body: 
+        responses: 
+            200:
+                body:
+                    type: object
+                    properties:
+                        shops: Shop[]
+                        links: Links
+    post:
+        description: Create a new shop object
+        headers: 
+        body: 
+            type: object
+            properties:
+                shop: Shop
+        responses: 
+            200:
+                body:
+                    type: object
+                    properties:
+                        shop: Shop
+                        links: Links
+    /{shopID}: 
+        uriParameters:
+            shopID: 
+                type: string
+                format: uuid
+        put:
+            description: Update a special shop
+            headers: 
+            body: 
+                type: object
+                properties:
+                    shop: Shop
+            responses: 
+                200:
+                    body:
+                        type: object
+                        properties:
+                            shop: Shop
+                            links: Links
+        /joinmall:
+            post:
+                description: Apply to join a mall
+                headers: 
+                body: 
+                    type: object
+                    properties:
+                        mall:
+                            type: object
+                            properties:
+                                mallID: 
+                                    type: string
+                                    format: uuid
+                responses: 
+                    204:
+                        description: Success, no content.
+
