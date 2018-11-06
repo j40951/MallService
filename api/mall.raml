@@ -1,0 +1,122 @@
+#%RAML 1.0
+
+title: MallService API
+version: v1
+baseUri: mall/{version}
+mediaType: application/json
+
+types: 
+    Mall: !include schema/mall.json
+    Links: !include schema/links.json
+      
+/malls:
+    get:
+        description: Get all malls
+        responses: 
+            200:
+                body:
+                    type: object
+                    properties:
+                        malls: Mall[]
+                        links: Links
+    /{mallID}: 
+        get:
+            description: Get a special mall
+            uriParameters:
+                mallID:
+                    type: string
+                    format: uuid
+            responses: 
+                200:
+                    body:
+                        type: object
+                        properties:
+                            mall: Mall
+                            links: Links
+
+/tenants/{tenantID}/malls:
+    uriParameters:
+        tenantID:
+            type: string
+            format: uuid
+    post:
+        description: Create a new mall
+        body: 
+            type: object
+            properties:
+                mall: Mall
+        responses: 
+            200:
+                body: 
+                    type: object
+                    properties:
+                        mall: Mall
+                        links: Links
+    /{mallID}: 
+        uriParameters:
+            mallID: 
+                type: string
+                format: uuid
+        put:
+            description: Update a special mall 
+            body: 
+                type: object
+                properties:
+                    mall: Mall
+            responses: 
+                200:
+                    body:
+                        type: object
+                        properties:
+                            mall: Mall
+                            links: links
+        
+        /avatars:
+            put:
+                description: Update a special mall avatar
+                body: 
+                    type: object
+                    properties:
+                        avatar:
+                            type: string
+                            format: url
+                responses: 
+                    200:
+                        body:
+                            type: object
+                            properties:
+                                mall: Mall
+                                links: Links
+        /addshop:
+            put:
+                description: Add a shop into mall 
+                headers: 
+                body: 
+                    type: object
+                    properties:
+                        shop:
+                            type: object
+                            properties:
+                                shopID:
+                                    type: string
+                                    format: uuid
+
+                responses: 
+                    204:
+                        description: Success, no content
+        /delshop:
+            put:
+                description: Del shop from a mall
+                headers: 
+                body: 
+                    type: object
+                    properties:
+                        shop:
+                            type: object
+                            properties:
+                                shopID:
+                                    type: string
+                                    format: uuid
+                responses: 
+                    204:
+                        description: Success, no content
