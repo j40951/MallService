@@ -1,0 +1,169 @@
+#%RAML 1.0
+
+title: MallService API
+version: v1
+baseUri: mall/{version}
+mediaType: application/json
+
+types: 
+    Address:
+        type: object
+        properties: 
+            country: 
+                type: string
+                minLength: 1
+                maxLength: 16
+            state:
+                type: string
+                minLength: 1
+                maxLength: 32
+            city:
+                type: string
+                minLength: 1
+                maxLength: 32
+            street:
+                type: string
+                minLength: 1
+                maxLength: 128
+    Links:
+        type: object
+        properties:
+            next?:
+                type: string
+            previous?:
+                type: string
+            self:
+                type: string
+    Mall:
+        type: object
+        properties: 
+            id:
+                type: string
+            name:
+                type: string
+                minLength: 1
+                maxLength: 64
+            avatar:
+                type: string
+            address:
+                type: Address
+            links:
+                type: Links
+      
+/malls:
+    displayName: Mall
+    get:
+        displayName: getAllMalls
+        description: Get all malls
+        responses: 
+            200:
+                body:
+                    application/json:
+                        type: object
+                        properties:
+                            malls: Mall[]
+                            links: Links
+    /{mallID}: 
+        uriParameters:
+            mallID:
+                type: string
+        get:
+            displayName: getMall
+            description: Get a special mall
+            responses: 
+                200:
+                    body:
+                        application/json:
+                            type: object
+                            properties:
+                                mall: Mall
+
+/tenants/{tenantID}/malls:
+    displayName: TenantMall
+    uriParameters:
+        tenantID:
+            type: string
+    post:
+        displayName: createMall
+        description: Create a new mall
+        body: 
+            application/json:
+                type: object
+                properties:
+                    mall: Mall
+        responses: 
+            200:
+                body: 
+                    application/json:
+                        type: object
+                        properties:
+                            mall: Mall
+                            links: Links
+    /{mallID}: 
+        uriParameters:
+            mallID: 
+                type: string
+        put:
+            displayName: getMall
+            description: Update a special mall 
+            body: 
+                application/json:
+                    type: object
+                    properties:
+                        mall: Mall
+            responses: 
+                200:
+                    body:
+                        application/json:
+                            type: object
+                            properties:
+                                mall: Mall
+                                links: Links
+        
+        /avatars:
+            put:
+                displayName: updateAvatar
+                description: Update a special mall avatar
+                body: 
+                    application/json:
+                        type: object
+                        properties:
+                            avatar:
+                                type: string
+                responses: 
+                    200:
+                        body:
+                            application/json:
+                                type: object
+                                properties:
+                                    mall: Mall
+                                    links: Links
+        /addshop:
+            put:
+                displayName: addShop
+                description: Add a shop into mall 
+                headers: 
+                body: 
+                    application/json:
+                        type: object
+                        properties:        
+                            shopID:
+                                type: string
+
+                responses: 
+                    204:
+                        description: Success, no content
+        /delshop:
+            put:
+                displayName: delShop
+                description: Del shop from a mall
+                headers: 
+                body: 
+                    application/json:
+                        type: object
+                        properties:                    
+                            shopID:
+                                type: string
+                responses: 
+                    204:
+                        description: Success, no content
